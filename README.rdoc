@@ -1,4 +1,4 @@
-Just another Sample Application.
+== Just another Sample Application.
 
 Author: Matt Witek
 Web: http://mwitekdesign.com
