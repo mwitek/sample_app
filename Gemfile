@@ -5,6 +5,7 @@ gem 'pg'
 gem 'haml'
 gem 'sass'
 gem 'jquery-rails'
+gem 'bootstrap-sass', '2.0.0'
 
 group :test, :development do
   gem 'guard-rspec', '0.5.5'

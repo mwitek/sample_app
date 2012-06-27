@@ -1,14 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title><%= title %></title>
-  <%= stylesheet_link_tag    "application", :media => "all" %>
-  <%= javascript_include_tag "application" %>
-  <%= csrf_meta_tags %>
+	<title><%= title %></title>
+	<%= stylesheet_link_tag "application", :media => "all" %>
+	<%= javascript_include_tag "application" %>
+	<%= csrf_meta_tags %>
+	<%= render 'layouts/shim' %>
 </head>
 <body>
-<h1><%= "#{params[:action]}".capitalize %></h1>
-<%= yield %>
-
+	<%= render 'layouts/header' %>
+	<div class="container">
+		<h1><%= "#{params[:action]}".capitalize %></h1>
+		<%= yield %>
+	</div><!-- END .container -->
+	<%= render 'layouts/footer' %>
 </body>
 </html>
+
+
+
