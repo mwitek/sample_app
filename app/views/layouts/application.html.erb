@@ -10,6 +10,9 @@
 <body>
 	<%= render 'layouts/header' %>
 	<div class="container">
+		<% flash.each do |key, value| %>
+        	<div class="alert alert-<%= key %>"><%= value %></div>
+      	<% end %>
 		<% if %w('about contact help home').include? params[:action] %>
 		<h1><%= "#{params[:action]}".capitalize %></h1>
 		<% end %>
