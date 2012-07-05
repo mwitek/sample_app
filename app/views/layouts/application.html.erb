@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title><%= title %></title>
+	<title><%= title(yield(:title)) %></title>
 	<%= stylesheet_link_tag "application", :media => "all" %>
 	<%= javascript_include_tag "application" %>
 	<%= csrf_meta_tags %>
@@ -10,12 +10,12 @@
 <body>
 	<%= render 'layouts/header' %>
 	<div class="container">
+		<% if %w('about contact help home').include? params[:action] %>
 		<h1><%= "#{params[:action]}".capitalize %></h1>
+		<% end %>
 		<%= yield %>
-	</div><!-- END .container -->
 	<%= render 'layouts/footer' %>
+	<%= debug(params) if Rails.env.development? %>	
+	</div><!-- END .container -->
 </body>
 </html>
-
-
-

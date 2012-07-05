@@ -11,6 +11,7 @@ gem 'bcrypt-ruby', '3.0.1'
 group :test, :development do
   gem 'guard-rspec', '0.5.5'
   gem 'rspec-rails', '2.10.0'
+  gem 'factory_girl_rails', '1.4.0'
 end
 
 group :development do
