@@ -7,4 +7,8 @@ module ApplicationHelper
 			"#{new_title}"
 		end
 	end
+
+	def page_title(override = "Page")
+		 "#{params[:action].capitalize} #{override}"
+	end
 end
