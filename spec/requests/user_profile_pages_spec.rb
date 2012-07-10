@@ -8,6 +8,7 @@ describe "User Pages" do
 
   		it { should have_selector('h1',    :text => user.name) }
   		it { should have_selector('title', :text => user.name) }
+  		it { should have_selector('ul.nav li.a', :text => "Log Out")}
 	end
 
 	describe "signup Page" do

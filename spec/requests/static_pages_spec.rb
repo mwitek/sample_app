@@ -3,10 +3,6 @@ describe "Static pages" do
   
   subject {page}
   
-  # before(:all) do
-  #     @action = puts :action
-  # end
-  
   shared_examples_for 'all static pages' do
     it {should have_selector('title', :text=>"#{base_title} #{@action}")}
     it "should have the right links on the layout" do
@@ -22,7 +18,7 @@ describe "Static pages" do
  
   describe "Home page" do
     before {visit root_path}
-    it {should have_selector('h1', :text => 'Welcome to the Sample App')}
+    it {should have_selector('h1', :text => params[:action])}
     it_should_behave_like 'all static pages'
   end
 
