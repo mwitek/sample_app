@@ -16,6 +16,16 @@ describe "Authentication" do
             it { should_not have_selector('div.alert.alert-error') }
         end
     end
+    describe "When Email is valid but password is not" do
+      let(:user) {FactoryGirl.create(:user)}
+      before do
+        fill_in "Email", :with =>user.email
+        fill_in "Password", :with =>'failure'
+        click_button 'Sign In'
+      end
+      it {should have_selector('div.alert.alert-error', :text => "Email found but password is invalid")}
+    end
+
     describe "Signin with valid inforamtion" do
     	let(:user) {FactoryGirl.create(:user)}
     	before do

@@ -9,6 +9,9 @@ class SessionsController < ApplicationController
 		flash[:success] = "Welcome to the app #{user.name}"
       	sign_in user
       	redirect_to user
+		elsif user && !user.authenticate(params[:session][:password])
+		flash.now[:error] = 'Email found but password is invalid'
+		render 'new'	
 		else
 		flash.now[:error] = 'Invalid email and password combination'
 		render 'new'
