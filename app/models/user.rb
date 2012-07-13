@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
 	before_save do |user|
 		user.email = email.downcase
 	end
+	before_save :create_remember_token
 
 	attr_accessible :email, :name, :password, :password_confirmation
 	has_secure_password
@@ -23,4 +24,10 @@ class User < ActiveRecord::Base
 	validates :password, :presence => true, :length => {:minimum => 6}
 	validates :password_confirmation, :presence => true
 	validates_format_of :email, :with => VALID_EMAIL_REGEX
+
+	private
+    	def create_remember_token
+      		self.remember_token = SecureRandom.hex
+    	end
+
 end

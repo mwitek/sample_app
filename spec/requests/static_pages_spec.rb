@@ -18,7 +18,7 @@ describe "Static pages" do
  
   describe "Home page" do
     before {visit root_path}
-    it {should have_selector('h1', :text => params[:action])}
+    it {should have_selector('h1', :text => "Welcome to the Sample App")}
     it_should_behave_like 'all static pages'
   end
 
