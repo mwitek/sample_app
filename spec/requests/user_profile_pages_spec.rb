@@ -2,7 +2,6 @@ require 'spec_helper'
 describe "User Pages" do
 	subject {page}
 	describe "profile page" do
-  	# Code to make a user variable
   		let(:user) { FactoryGirl.create :user }
  		before { visit user_path(user) }
 
@@ -38,6 +37,12 @@ describe "User Pages" do
 			it {should have_content("Email is invalid")}
 			it {should have_selector('div.alert')}
 		end	
+	end
+
+	describe "edit page" do
+		let(:user) { FactoryGirl.create :user }
+ 		before { visit edit_user_path(user) }
+		it {should have_selector("h1", :text => "Update your profile")}
 	end
 
 end
