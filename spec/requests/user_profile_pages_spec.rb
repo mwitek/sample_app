@@ -21,10 +21,7 @@ describe "User Pages" do
 		end
 		describe "When form is valid" do
 			before do
-				fill_in "Name", :with => "Matt Witek"
-				fill_in "Email", :with => "matt@mwitekdesign.com"
-				fill_in "Password", :with => "foobar"
-				fill_in "Confirmation", :with => "foobar"
+				valid_signup
 			end
 			it "should add a user to the database" do
 				expect { click_button submit }.to change(User, :count).by(1)

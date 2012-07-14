@@ -1,15 +1,14 @@
 class SessionsController < ApplicationController
-
 	def new
 	end
 
 	def create
-		user = User.find_by_email(params[:session][:email])
-		if user && user.authenticate(params[:session][:password])
+		user = User.find_by_email(params[:email])
+		if user && user.authenticate(params[:password])
 		flash[:success] = "Welcome to the app #{user.name}"
       	sign_in user
       	redirect_to user
-		elsif user && !user.authenticate(params[:session][:password])
+		elsif user && !user.authenticate(params[:password])
 		flash.now[:error] = 'Email found but password is invalid'
 		render 'new'	
 		else
