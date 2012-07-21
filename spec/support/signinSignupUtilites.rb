@@ -3,6 +3,7 @@ module SigninSignupUtilites
 		fill_in "Email", :with => user.email
     	fill_in "Password", :with => user.password
     	click_button 'Sign In'
+    	cookies[:remember_token] = user.remember_token
 	end
 
 	def valid_signup
