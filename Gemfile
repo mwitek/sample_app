@@ -7,6 +7,9 @@ gem 'sass'
 gem 'jquery-rails'
 gem 'bootstrap-sass', '2.0.0'
 gem 'bcrypt-ruby', '3.0.1'
+gem 'faker', '1.0.1'
+gem 'will_paginate', '3.0.3'
+gem 'bootstrap-will_paginate', '0.0.6'
 
 group :test, :development do
   gem 'guard-rspec', '0.5.5'

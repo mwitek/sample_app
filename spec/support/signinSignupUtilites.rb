@@ -1,5 +1,6 @@
 module SigninSignupUtilites
-	def valid_signin(user)
+	def login_user(user)
+		visit signin_path
 		fill_in "Email", :with => user.email
     	fill_in "Password", :with => user.password
     	click_button 'Sign In'
@@ -7,6 +8,7 @@ module SigninSignupUtilites
 	end
 
 	def valid_signup
+		visit signup_path
 		fill_in "Name", :with => "Jon Doe"
 		fill_in "Email", :with => "email@example.com"
 		fill_in "Password", :with => "foobar"
