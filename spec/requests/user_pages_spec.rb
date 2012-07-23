@@ -3,7 +3,14 @@ require 'spec_helper'
 describe "User Pages" do
 	let(:user) { FactoryGirl.create :user }
 	subject { page }
-  
+  describe 'visiting /new while logged in' do
+  	before do
+  		login_user(user)
+  		visit new_user_path
+  	end
+  	it { should have_selector('title', :text=> user.name) }
+  	it {should_not have_selector('button', :text=> "Create my account" )}
+  end
 	describe "index" do
 		before(:all) { 30.times { FactoryGirl.create(:user) } }
 		after(:all) { User.delete_all }
@@ -103,5 +110,11 @@ describe "User Pages" do
 			it { should have_selector('div.alert') }
 		end	
 	end
-
+	describe "admin accessible attributes" do
+    it "should not allow access :admin" do
+      expect do
+        User.new(:admin => true)
+      end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
+    end    
+  end
 end

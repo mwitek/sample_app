@@ -16,6 +16,7 @@ class User < ActiveRecord::Base
 	before_save :create_remember_token
 
 	attr_accessible :email, :name, :password, :password_confirmation
+	
 	has_secure_password
 
 	VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
