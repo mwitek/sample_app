@@ -2,7 +2,10 @@ require 'spec_helper'
 
 describe "User Pages" do
 	let(:user) { FactoryGirl.create :user }
+	let!(:post1){ FactoryGirl.create :micropost, :user_id=> user.id, :content => "kowabunga" }
+	let!(:post2){ FactoryGirl.create :micropost, :user_id=> user.id, :content => "dude" }
 	subject { page }
+  
   describe 'visiting /new while logged in' do
   	before do
   		login_user(user)
@@ -11,6 +14,7 @@ describe "User Pages" do
   	it { should have_selector('title', :text=> user.name) }
   	it {should_not have_selector('button', :text=> "Create my account" )}
   end
+	
 	describe "index" do
 		before(:all) { 30.times { FactoryGirl.create(:user) } }
 		after(:all) { User.delete_all }
@@ -50,6 +54,11 @@ describe "User Pages" do
 		before { visit user_path(user) }
 			it { should have_selector('h1',    :text => user.name) }
 			it { should have_selector('title', :text => user.name) }
+			describe "micropost on page" do
+				it { should have_content(post1.content) }
+				it { should have_content(post2.content) }
+				it { should have_content(user.microposts.count) }
+			end
 	end
 	
 	describe "Edit Page" do
@@ -117,4 +126,5 @@ describe "User Pages" do
       end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
     end    
   end
+
 end

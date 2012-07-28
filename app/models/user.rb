@@ -2,11 +2,14 @@
 #
 # Table name: users
 #
-#  id         :integer         not null, primary key
-#  name       :string(255)
-#  email      :string(255)
-#  created_at :datetime        not null
-#  updated_at :datetime        not null
+#  id              :integer         not null, primary key
+#  name            :string(255)
+#  email           :string(255)
+#  created_at      :datetime        not null
+#  updated_at      :datetime        not null
+#  password_digest :string(255)
+#  remember_token  :string(255)
+#  admin           :boolean         default(FALSE)
 #
 
 class User < ActiveRecord::Base
@@ -16,6 +19,7 @@ class User < ActiveRecord::Base
 	before_save :create_remember_token
 
 	attr_accessible :email, :name, :password, :password_confirmation
+	has_many :microposts, :dependent => :destroy
 	
 	has_secure_password
 

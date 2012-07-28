@@ -2,19 +2,22 @@
 #
 # Table name: users
 #
-#  id         :integer         not null, primary key
-#  name       :string(255)
-#  email      :string(255)
-#  created_at :datetime        not null
-#  updated_at :datetime        not null
+#  id              :integer         not null, primary key
+#  name            :string(255)
+#  email           :string(255)
+#  created_at      :datetime        not null
+#  updated_at      :datetime        not null
+#  password_digest :string(255)
+#  remember_token  :string(255)
+#  admin           :boolean         default(FALSE)
 #
+
 require 'spec_helper'
 
 describe User do
 	before do
-    @user = User.new(:name => "Example User", :email => "user@example.com", 
-                     :password => "foobar", :password_confirmation => "foobar")
-  	end
+    @user = User.new(:name => "Example User",:email => "user@example.com",:password => "foobar", :password_confirmation => "foobar")
+  end
 
 	subject {@user}
 
@@ -26,6 +29,7 @@ describe User do
 	it {should respond_to :remember_token }
 	it {should be_valid}
 	it {should respond_to :authenticate}
+	it { should respond_to(:microposts) }
 	
 	describe "When name is not valid" do
 		before { @user.name = "a"*51 }
@@ -39,8 +43,7 @@ describe User do
 
 	describe "When Email format is not valid" do
 		it "should not be valid" do
-			addresses = %w(user@foo,com user_at_foo.org example.user@foo.
-	                     foo@bar_baz.com foo@bar+baz.com)
+			addresses = %w(user@foo,com user_at_foo.org example.user@foo.foo@bar_baz.com foo@bar+baz.com)
 			addresses.each do |invalid_email|
 				@user.email = invalid_email
 				@user.should_not be_valid
@@ -71,7 +74,7 @@ describe User do
 	describe "Return Value of Authenticate method" do
 		
 		before { @user.save }
-	    let(:found_user) { User.find_by_email(@user.email) }
+	  let(:found_user) { User.find_by_email(@user.email) }
 		
 		describe "User with valid password" do
 			it {should == found_user.authenticate(@user.password)}
@@ -85,6 +88,7 @@ describe User do
 		
 		describe "a user password that is too short" do
 			before {@user.password = "a"*5}
+			
 			it {should_not be_valid}
 		end
 	end
@@ -98,8 +102,32 @@ describe User do
 			@user.reload.email.should == mixed_case_email.downcase
 	    end
 	end
+
 	describe "at user token" do
 		before {@user.save}
 		its(:remember_token) {should_not be_blank}
 	end
+
+	describe "micropost associations" do
+
+    before { @user.save }
+    let!(:older_micropost) do 
+      FactoryGirl.create(:micropost, :user => @user, :created_at => 1.day.ago)
+    end
+    let!(:newer_micropost) do
+      FactoryGirl.create(:micropost, :user => @user, :created_at => 1.hour.ago)
+    end
+
+    it "should have the right microposts in the right order" do
+      @user.microposts.should == [newer_micropost, older_micropost]
+    end
+
+    it "should destroy associated micropost" do
+    	microposts = @user.microposts
+    	@user.destroy
+    	microposts.each do |post|
+    		Micropost.find_by_id(post.id).should be_nil
+    	end
+    end
+  end
 end
