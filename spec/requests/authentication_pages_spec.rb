@@ -63,9 +63,19 @@ describe "Authentication" do
 						it { should have_selector('title', :text => "Edit user")}
 					end
 				end
-
 				describe "submitting to the update action" do
 					before { put user_path(user) }
+					specify { response.should redirect_to(signin_path) }
+				end
+			end
+			describe "in the micropost controller" do
+				let(:micropost) {FactoryGirl.create(:micropost)}
+				describe "submit to the create action" do
+					before { post microposts_path }
+					specify { response.should redirect_to(signin_path) }
+				end
+				describe "submit to the destroy action" do
+					before { delete micropost_path(micropost) }
 					specify { response.should redirect_to(signin_path) }
 				end
 			end
