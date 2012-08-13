@@ -20,17 +20,16 @@ describe User do
   end
 
 	subject {@user}
-
-	it {should respond_to :name}
-	it {should respond_to :email}
-	it {should respond_to :password_digest}
-	it {should respond_to :password}
-	it {should respond_to :password_confirmation}
-	it {should respond_to :remember_token }
-	it {should be_valid}
-	it {should respond_to :authenticate}
-	it { should respond_to(:microposts) }
-	
+	it { should be_valid }
+	it { should respond_to :name }
+	it { should respond_to :email }
+	it { should respond_to :password_digest }
+	it { should respond_to :password }
+	it { should respond_to :password_confirmation }
+	it { should respond_to :remember_token }
+	it { should respond_to :authenticate }
+	it { should respond_to :microposts }
+	it { should respond_to :feed  }
 	describe "When name is not valid" do
 		before { @user.name = "a"*51 }
 		it { should_not be_valid }
@@ -129,5 +128,8 @@ describe User do
     		Micropost.find_by_id(post.id).should be_nil
     	end
     end
+  	describe "Status" do
+  		let(:unfollow) { FactoryGirl.create(:micropost, :user => FactoryGirl.create(:user)) }
+  	end
   end
 end

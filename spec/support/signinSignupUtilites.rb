@@ -16,6 +16,6 @@ module SigninSignupUtilites
 	end
 
 	def valid_micropost
-		fill_in "micropost_content" :with => "Lorem Ipsum"
+		fill_in "micropost_content", :with => "Lorem Ipsum"
 	end
 end

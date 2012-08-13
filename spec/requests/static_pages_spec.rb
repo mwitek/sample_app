@@ -2,7 +2,7 @@ require 'spec_helper'
 describe "Static pages" do
   
   subject {page}
-  
+  let(:user) { FactoryGirl.create :user }
   shared_examples_for 'all static pages' do
     it {should have_selector('title', :text=>"#{base_title} #{@action}")}
     it "should have the right links on the layout" do
@@ -20,6 +20,21 @@ describe "Static pages" do
     before {visit root_path}
     it {should have_selector('h1', :text => "Welcome to the Sample App")}
     it_should_behave_like 'all static pages'
+
+    describe "for signed in users" do
+      before do
+        login_user(user)
+        FactoryGirl.create(:micropost, :user => user, :content => "lorem ipsum")
+        FactoryGirl.create(:micropost, :user => user, :content => "ipsum ipsum")
+        visit root_path
+      end
+      it { should have_selector('h1', :text => user.name) }
+      it "should render the users feed" do
+        user.feed.each do |item|
+          page.should have_selector("li##{item.id}", :text => item.content)
+        end
+      end
+    end
   end
 
   describe "Help page" do

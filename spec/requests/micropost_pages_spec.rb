@@ -12,13 +12,22 @@ describe "Micropost Pages" do
  			end
  			describe "error message" do
  				before { click_button "Post" }
- 				it { should have_content('Error') }
+ 				it { should have_content('error') }
  			end
  		end
  		describe "with valid information" do
  			before { valid_micropost }
  			it "should create a micropost" do
  				expect { click_button "Post" }.should change(Micropost, :count).by(1)
+ 			end
+ 		end
+ 		describe "Micropost distruction" do
+ 			before do
+ 				FactoryGirl.create(:micropost, :user => user, :content => "lorem, Ipsum")
+ 				visit root_path
+ 			end	
+ 			it "should delete micropost" do
+ 				expect { click_link "delete"}.should change(Micropost, :count).by(-1)
  			end
  		end
  	end

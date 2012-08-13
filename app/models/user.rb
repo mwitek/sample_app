@@ -30,9 +30,12 @@ class User < ActiveRecord::Base
 	validates :password_confirmation, :presence => true
 	validates_format_of :email, :with => VALID_EMAIL_REGEX
 
+  def feed
+		Micropost.where("user_id = ?", id)
+	end
+
 	private
     	def create_remember_token
       		self.remember_token = SecureRandom.hex
     	end
-
 end
