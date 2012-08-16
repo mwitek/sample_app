@@ -4,6 +4,10 @@ describe "User Pages" do
 	let(:user) { FactoryGirl.create :user }
 	let!(:post1){ FactoryGirl.create :micropost, :user_id=> user.id, :content => "kowabunga" }
 	let!(:post2){ FactoryGirl.create :micropost, :user_id=> user.id, :content => "dude" }
+	let(:other_user) { FactoryGirl.create :user }
+	let!(:other_user_post1) { FactoryGirl.create(:micropost, :user => other_user, :content => "cheerios") }
+	let!(:other_user_post1) { FactoryGirl.create(:micropost, :user => other_user, :content => "chips") }
+
 	subject { page }
   
   describe 'visiting /new while logged in' do
@@ -51,14 +55,27 @@ describe "User Pages" do
 	end
 
 	describe "profile page" do
-		before { visit user_path(user) }
+		before do
+			login_user(user)
+			visit user_path(user)
+		end
 			it { should have_selector('h1',    :text => user.name) }
 			it { should have_selector('title', :text => user.name) }
 			describe "micropost on page" do
 				it { should have_content(post1.content) }
 				it { should have_content(post2.content) }
 				it { should have_content(user.microposts.count) }
+				it { should have_link('delete') }
 			end
+	end
+
+	describe "visit another users profile page" do
+		before do
+			login_user(user)
+			visit user_path(other_user)
+		end
+		it { should have_content(other_user_post1.content)}
+		it { should_not have_link('delete') }
 	end
 	
 	describe "Edit Page" do

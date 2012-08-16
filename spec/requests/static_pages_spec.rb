@@ -24,14 +24,24 @@ describe "Static pages" do
     describe "for signed in users" do
       before do
         login_user(user)
-        FactoryGirl.create(:micropost, :user => user, :content => "lorem ipsum")
-        FactoryGirl.create(:micropost, :user => user, :content => "ipsum ipsum")
+        30.times do |n|
+          content = "content #{n+1}"
+          FactoryGirl.create(:micropost, :user => user, :content => content)
+        end
         visit root_path
       end
       it { should have_selector('h1', :text => user.name) }
-      it "should render the users feed" do
-        user.feed.each do |item|
+      it "should return the users feed with 5 feeds" do
+        user.feed.each_with_index do |item, i|
+          break if i == 5;
           page.should have_selector("li##{item.id}", :text => item.content)
+        end
+      end
+      it "pagination should not return more than 5 user feeds" do
+        user.feed.each_with_index do |item, i|
+          if i > 5
+            page.should_not have_selector("li##{item.id}", :text => item.content);
+          end
         end
       end
     end

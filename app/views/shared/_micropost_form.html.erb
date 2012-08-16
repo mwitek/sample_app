@@ -1,7 +1,24 @@
 <%= form_for(@micropost) do |f| %>
 <%= render 'shared/error_messages', :object => f.object %>
   <div class="field">
-    <%= f.text_area :content, :placeholder => "Compose new micropost..." %>
+    <%= f.text_area :content, :placeholder => "Compose new micropost...", :onkeyup=> "countChar(this)"  %>
   </div>
+  <div id="charNum"></div>
   <%= f.submit "Post", :class => "btn btn-large btn-primary" %>
 <% end %>
+  <script>
+		function countChar(val){
+		  var $val = $(val)
+		  var len = val.value.length;
+		   $('#charNum').text(140 - len);
+		  if (len >= 140) {
+		     $val.parent().addClass('field_with_errors');
+		     $('.new_micropost .btn').attr('disabled', 'disabled');
+		  }else{
+		  	if($val.parent().hasClass('field_with_errors')){
+		  		$val.parent().removeClass('field_with_errors');
+		  		$('.new_micropost .btn').removeAttr('disabled');
+		  	}
+		  }
+		};
+  </script>

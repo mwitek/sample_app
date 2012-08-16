@@ -15,6 +15,8 @@ describe "Micropost Pages" do
  				it { should have_content('error') }
  			end
  		end
+ 		describe "shoud break words that are to long" do
+ 		end
  		describe "with valid information" do
  			before { valid_micropost }
  			it "should create a micropost" do
